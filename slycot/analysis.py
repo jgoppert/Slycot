@@ -879,4 +879,98 @@ def ab09bd(dico,job,equil,n,m,p,A,B,C,D,nr=None,tol1=0,tol2=0,ldwork=None):
     nr,A,B,C,D,hsv = out[:-2]
     return nr, A[:Nr,:Nr], B[:Nr,:], C[:,:Nr],D[:,:], hsv
 
+def ab13bd(dico, jobn, n, m, p, a, b, c, d, tol = 1e-10):
+    """H2_norm = ab13bd(dico, jobn, n, m, p, a, b, c, d, [tol])"""
+    if dico != 'C' and dico != 'D':
+        raise ValueError('dico must be "C" or "D"')
+    if jobn != 'H' and jobn != 'L':
+        raise ValueError('jobn must be "H" or "L"')
+    out = _wrapper.ab13bd(dico, jobn, n, m, p, a, b, c, d, tol)
+    if out[-1] == 0:
+        # success
+        return out[0]
+    elif out[-1] < 0:
+        hidden = ' (hidden by the wrapper)'
+        arg_list = ['dico', 'jobn', 'n', 'm', 'p',
+                    'a', 'lda'+hidden, 'b', 'ldb'+hidden, 'c', 'ldc'+hidden, 'd', 'ldd'+hidden,
+                    'nq'+hidden,'tol', 'dwork'+hidden, 'ldwork'+hidden, 'iwarn'+hidden, 'info'+hidden]
+        error_text = "The following argument had an illegal value: " + arg_list[-out[-1]-1]
+        e = ValueError(error_text)
+        e.info = out[-1]
+        raise e
+    elif out[-1] == 1:
+        e = ArithmeticError("the reduction of A to a real Schur form failed")
+        e.info = out[-1]
+        raise e
+    elif out[-1] == 2:
+        e = ArithmeticError("a failure was detected during the reordering of the real Schur form of A, "
+                            "or in the iterative process for reordering the eigenvalues of "
+                            "Z'*(A + B*F)*Z along the diagonal")
+        e.info = out[-1]
+        raise e
+    elif out[-1] == 3:
+        e = ArithmeticError("the matrix A has a controllable eigenvalue on the "
+                            ( "imaginary axis" if dico == 'C' else "unit circle" ))
+        e.info = out[-1]
+        raise e
+    elif out[-1] == 4:
+        e = ArithmeticError("the solution of Lyapunov equation failed because the equation is singular")
+        e.info = out[-1]
+        raise e
+    elif out[-1] == 5:
+        e = ArithmeticError("DICO = 'C' and D is a nonzero matrix")
+        e.info = out[-1]
+        raise e
+    elif out[-1] == 6:
+        e = ArithmeticError("JOBN = 'H' and the system is unstable")
+        e.info = out[-1]
+        raise e
+    else:
+        raise RuntimeError("unknown error code %r" % out[-1])
+
+def ab13dd(dico, jobe, equil, jobd, n, m, p, a, e, b, c, d, tol = 1e-10):
+    """Hinf_norm, f_peak = ab13dd(dico, jobe, equil, jobd, n, m, p, a, e, b, c, d, [tol])"""
+    if dico != 'C' and dico != 'D':
+        raise ValueError('dico must be "C" or "D"')
+    if jobe != 'G' and jobe != 'I':
+        raise ValueError('jobe must be "G" or "I"')
+    if equil != 'S' and equil != 'N':
+        raise ValueError('equil must be "S" or "N"')
+    if jobd != 'D' and jobd != 'Z':
+        raise ValueError('jobd must be "D" or "Z"')
+    out = _wrapper.ab13dd(dico, jobe, equil, jobd, n, m, p, [0.0, 1.0], a, e, b, c, d, tol)
+    if out[-1] == 0:
+        # success
+        fpeak = out[0][0] if out[0][1] > 0 else float('inf')
+        gpeak = out[1][0] if out[1][1] > 0 else float('inf')
+        return gpeak, fpeak
+    elif out[-1] < 0:
+        hidden = ' (hidden by the wrapper)'
+        arg_list = ['dico', 'jobe', 'equil', 'jobd', 'n', 'm', 'p', 'fpeak'+hidden,
+                    'a', 'lda'+hidden, 'e', 'lde'+hidden, 'b', 'ldb'+hidden, 'c', 'ldc'+hidden, 'd', 'ldd'+hidden,
+                    'gpeak'+hidden, 'tol', 'iwork'+hidden, 'dwork'+hidden, 'ldwork'+hidden,
+                    'cwork'+hidden, 'lcwork'+hidden, 'info'+hidden]
+        error_text = "The following argument had an illegal value: " + arg_list[-out[-1]-1]
+        e = ValueError(error_text)
+        e.info = out[-1]
+        raise e
+    elif out[-1] == 1:
+        e = ArithmeticError("the matrix E is (numerically) singular")
+        e.info = out[-1]
+        raise e
+    elif out[-1] == 2:
+        e = ArithmeticError("the (periodic) QR (or QZ) algorithm for computing eigenvalues did not converge")
+        e.info = out[-1]
+        raise e
+    elif out[-1] == 3:
+        e = ArithmeticError("the SVD algorithm for computing singular values did not converge")
+        e.info = out[-1]
+        raise e
+    elif out[-1] == 4:
+        e = ArithmeticError("the tolerance is too small and the algorithm did not converge")
+        e.info = out[-1]
+        raise e
+    else:
+        raise RuntimeError("unknown error code %r" % out[-1])
+
 # to be replaced by python wrappers
