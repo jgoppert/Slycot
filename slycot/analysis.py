@@ -973,4 +973,49 @@ def ab13dd(dico, jobe, equil, jobd, n, m, p, a, e, b, c, d, tol = 1e-10):
     else:
         raise RuntimeError("unknown error code %r" % out[-1])
 
+def ab13ed(n, a, tol = 9.0):
+    """low, high = ab13ed(n, a, [tol])"""
+    out = _wrapper.ab13ed(n, a, tol)
+    if out[-1] == 0:
+        # success
+        return out[0], out[1]
+    elif out[-1] < 0:
+        hidden = ' (hidden by the wrapper)'
+        arg_list = ['n', 'a', 'lda'+hidden, 'low'+hidden, 'high'+hidden, 'tol',
+                    'dwork'+hidden, 'ldwork'+hidden, 'info'+hidden]
+        error_text = "The following argument had an illegal value: " + arg_list[-out[-1]-1]
+        e = ValueError(error_text)
+        e.info = out[-1]
+        raise e
+    elif out[-1] == 1:
+        e = ArithmeticError("the QR algorithm fails to converge")
+        e.info = out[-1]
+        raise e
+    else:
+        raise RuntimeError("unknown error code %r" % out[-1])
+
+def ab13fd(n, a, tol = 0.0):
+    """beta, omega = ab13fd(n, a, [tol])"""
+    out = _wrapper.ab13fd(n, a, tol)
+    if out[-1] == 0:
+        # success
+        return out[0], out[1]
+    elif out[-1] < 0:
+        hidden = ' (hidden by the wrapper)'
+        arg_list = ['n', 'a', 'lda'+hidden, 'beta'+hidden, 'omega'+hidden, 'tol',
+                    'dwork'+hidden, 'ldwork'+hidden, 'cwork'+hidden, 'lcwork'+hidden, 'info'+hidden]
+        error_text = "The following argument had an illegal value: " + arg_list[-out[-1]-1]
+        e = ValueError(error_text)
+        e.info = out[-1]
+        raise e
+    elif out[-1] == 1:
+        warnings.warn("the routine fails to compute beta(A) within the specified tolerance")
+        return out[0], out[1]  # the returned value is an upper bound on beta(A)
+    elif out[-1] == 2:
+        e = ArithmeticError("either the QR or SVD algorithm fails to converge")
+        e.info = out[-1]
+        raise e
+    else:
+        raise RuntimeError("unknown error code %r" % out[-1])
+
 # to be replaced by python wrappers
