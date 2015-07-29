@@ -950,7 +950,7 @@ def ab13bd(dico, jobn, n, m, p, A, B, C, D, tol = 1e-10):
         e.info = out[-1]
         raise e
     elif out[-1] == 3:
-        e = ArithmeticError("the matrix A has a controllable eigenvalue on the "
+        e = ArithmeticError("the matrix A has a controllable eigenvalue on the " +
                             ( "imaginary axis" if dico == 'C' else "unit circle" ))
         e.info = out[-1]
         raise e
