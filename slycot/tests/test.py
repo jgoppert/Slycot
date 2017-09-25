@@ -1,5 +1,6 @@
 import unittest
 from .. import synthesis
+from .. import analysis
 from .. import math
 
 
@@ -48,3 +49,11 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(Ac[0][1], -1)
         self.assertAlmostEqual(Ac[1][0], 1)
         self.assertAlmostEqual(Ac[1][1], -3)
+
+    def test_sb13fb(self):
+        import numpy as np
+        n = 5
+        A = np.diag(-1 -1*np.arange(n)) + 3j*np.identity(n)
+        a, beta, omega = analysis.ab13fd(n,A)
+        self.assertAlmostEqual(omega, 0.)
+        self.assertAlmostEqual(beta, 1.)

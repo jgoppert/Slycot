@@ -18,10 +18,11 @@
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
 
-from . import _wrapper
+import _wrapper
 import warnings
 
-def ab01nd(n,m,A,B,jobz='N',tol=0,ldwork=None):
+
+def ab01nd(n, m, A, B, jobz='N', tol=0, ldwork=None):
     """ Ac,Bc,ncont,indcon,nblk,Z,tau = ab01nd_i(n,m,A,B,[jobz,tol,ldwork])
 
     To find a controllable realization for the linear time-invariant
@@ -114,38 +115,39 @@ def ab01nd(n,m,A,B,jobz='N',tol=0,ldwork=None):
             elementary reflectors used in the reduction of B and A."""
 
     hidden = ' (hidden by the wrapper)'
-    arg_list = ['jobz', 'n', 'm', 'A', 'LDA'+hidden, 'B', 'LDB'+hidden,
-    'ncont', 'indcon', 'nblk', 'Z', 'LDZ'+hidden, 'tau', 'tol',
-    'IWORK'+hidden, 'DWORK'+hidden, 'ldwork', 'info'+hidden]
+    arg_list = ['jobz', 'n', 'm', 'A', 'LDA' + hidden, 'B', 'LDB' + hidden,
+                'ncont', 'indcon', 'nblk', 'Z', 'LDZ' + hidden, 'tau', 'tol',
+                'IWORK' + hidden, 'DWORK' + hidden, 'ldwork', 'info' + hidden]
     if ldwork is None:
-        ldwork = max(n,3*m)
+        ldwork = max(n, 3 * m)
     if jobz == 'N':
-        out = _wrapper.ab01nd_n(n,m,A,B,tol=tol,ldwork=ldwork)
+        out = _wrapper.ab01nd_n(n, m, A, B, tol=tol, ldwork=ldwork)
         if out[-1] < 0:
-            error_text = "The following argument had an illegal value: "+arg_list[-out[-1]-1]
+            error_text = "The following argument had an illegal value: " + arg_list[-out[-1] - 1]
             raise ValueError(error_text)
         # sets Z to None
         out[5] = None
         return out[:-1]
     if jobz == 'I':
-        out = _wrapper.ab01nd_i(n,m,A,B,tol=tol,ldwork=ldwork)
+        out = _wrapper.ab01nd_i(n, m, A, B, tol=tol, ldwork=ldwork)
         if out[-1] < 0:
-            error_text = "The following argument had an illegal value: "+arg_list[-out[-1]-1]
+            error_text = "The following argument had an illegal value: " + arg_list[-out[-1] - 1]
             e = ValueError(error_text)
             e.info = out[-1]
             raise e
         return out[:-1]
     if jobz == 'F':
-        out = _wrapper.ab01nd_f(n,m,A,B,tol=tol,ldwork=ldwork)
+        out = _wrapper.ab01nd_f(n, m, A, B, tol=tol, ldwork=ldwork)
         if out[-1] < 0:
-            error_text = "The following argument had an illegal value: "+arg_list[-out[-1]-1]
+            error_text = "The following argument had an illegal value: " + arg_list[-out[-1] - 1]
             e = ValueError(error_text)
             e.info = out[-1]
             raise e
         return out[:-1]
     raise ValueError('jobz must be either N, I or F')
 
-def ab05md(n1,m1,p1,n2,p2,A1,B1,C1,D1,A2,B2,C2,D2,uplo='U'):
+
+def ab05md(n1, m1, p1, n2, p2, A1, B1, C1, D1, A2, B2, C2, D2, uplo='U'):
     """ n,a,b,c,d = ab05md(n1,m1,p1,n2,p2,a1,b1,c1,d1,a2,b2,c2,d2,[uplo])
 
     To obtain the state-space model (A,B,C,D) for the cascaded
@@ -219,21 +221,22 @@ def ab05md(n1,m1,p1,n2,p2,A1,B1,C1,D1,A2,B2,C2,D2,uplo='U'):
         The algorithms require less than 30N^3  floating point operations.
     """
     hidden = ' (hidden by the wrapper)'
-    arg_list = ['uplo', 'OVER'+hidden, 'n1', 'm1', 'p1', 'n2', 'p2', 'A1',
-        'LDA1'+hidden, 'B1', 'LDB1'+hidden, 'C1', 'LDC1'+hidden, 'D1',
-        'LDD1'+hidden, 'A2', 'LDA2'+hidden, 'B2', 'LDB2'+hidden, 'C2',
-        'LDC2'+hidden, 'D2', 'LDD2'+hidden, 'n', 'A', 'LDA'+hidden, 'B',
-        'LDB'+hidden, 'C', 'LDC'+hidden, 'D', 'LDD'+hidden, 'DWORK'+hidden,
-        'ldwork', 'info'+hidden ]
-    out = _wrapper.ab05md(n1,m1,p1,n2,p2,A1,B1,C1,D1,A2,B2,C2,D2,uplo=uplo)
+    arg_list = ['uplo', 'OVER' + hidden, 'n1', 'm1', 'p1', 'n2', 'p2', 'A1',
+                'LDA1' + hidden, 'B1', 'LDB1' + hidden, 'C1', 'LDC1' + hidden, 'D1',
+                'LDD1' + hidden, 'A2', 'LDA2' + hidden, 'B2', 'LDB2' + hidden, 'C2',
+                'LDC2' + hidden, 'D2', 'LDD2' + hidden, 'n', 'A', 'LDA' + hidden, 'B',
+                'LDB' + hidden, 'C', 'LDC' + hidden, 'D', 'LDD' + hidden, 'DWORK' + hidden,
+                'ldwork', 'info' + hidden]
+    out = _wrapper.ab05md(n1, m1, p1, n2, p2, A1, B1, C1, D1, A2, B2, C2, D2, uplo=uplo)
     if out[-1] < 0:
-        error_text = "The following argument had an illegal value: "+arg_list[-out[-1]-1]
+        error_text = "The following argument had an illegal value: " + arg_list[-out[-1] - 1]
         e = ValueError(error_text)
         e.info = out[-1]
         raise e
     return out[:-1]
 
-def ab05nd(n1,m1,p1,n2,A1,B1,C1,D1,A2,B2,C2,D2,alpha=1.0,ldwork=None):
+
+def ab05nd(n1, m1, p1, n2, A1, B1, C1, D1, A2, B2, C2, D2, alpha=1.0, ldwork=None):
     """  n,A,B,C,D = ab05nd(n1,m1,p1,n2,A1,B1,C1,D1,A2,B2,C2,D2,[alpha,ldwork])
 
     To obtain the state-space model (A,B,C,D) for the feedback inter-connection
@@ -303,17 +306,17 @@ def ab05nd(n1,m1,p1,n2,A1,B1,C1,D1,A2,B2,C2,D2,alpha=1.0,ldwork=None):
             matrix D for the connected system.
     """
     hidden = ' (hidden by the wrapper)'
-    arg_list = ['over'+hidden, 'n1', 'm1', 'p1', 'n2', 'alpha', 'A1', 'LDA1'+hidden,
-        'B1', 'LDB1'+hidden, 'C1', 'LDC1'+hidden, 'D1', 'LDD1'+hidden, 'A2',
-        'LDA2'+hidden, 'B2', 'LDB2'+hidden, 'C2', 'LDC2'+hidden, 'D2',
-        'LDD2'+hidden, 'n', 'A', 'LDA'+hidden, 'B', 'LDB'+hidden, 'C',
-        'LDC'+hidden, 'D', 'LDD'+hidden, 'IWORK'+hidden, 'DWORK'+hidden,
-        'ldwork', 'info'+hidden]
+    arg_list = ['over' + hidden, 'n1', 'm1', 'p1', 'n2', 'alpha', 'A1', 'LDA1' + hidden,
+                'B1', 'LDB1' + hidden, 'C1', 'LDC1' + hidden, 'D1', 'LDD1' + hidden, 'A2',
+                'LDA2' + hidden, 'B2', 'LDB2' + hidden, 'C2', 'LDC2' + hidden, 'D2',
+                'LDD2' + hidden, 'n', 'A', 'LDA' + hidden, 'B', 'LDB' + hidden, 'C',
+                'LDC' + hidden, 'D', 'LDD' + hidden, 'IWORK' + hidden, 'DWORK' + hidden,
+                'ldwork', 'info' + hidden]
     if ldwork is None:
-        ldwork = max(p1*p1,m1*m1,n1*p1)
-    out = _wrapper.ab05nd(n1,m1,p1,n2,alpha,A1,B1,C1,D1,A2,B2,C2,D2,ldwork=ldwork)
+        ldwork = max(p1 * p1, m1 * m1, n1 * p1)
+    out = _wrapper.ab05nd(n1, m1, p1, n2, alpha, A1, B1, C1, D1, A2, B2, C2, D2, ldwork=ldwork)
     if out[-1] < 0:
-        error_text = "The following argument had an illegal value: "+arg_list[-out[-1]-1]
+        error_text = "The following argument had an illegal value: " + arg_list[-out[-1] - 1]
         e = ValueError(error_text)
         e.info = out[-1]
         raise e
@@ -323,7 +326,8 @@ def ab05nd(n1,m1,p1,n2,A1,B1,C1,D1,A2,B2,C2,D2,alpha=1.0,ldwork=None):
         raise e
     return out[:-1]
 
-def ab07nd(n,m,A,B,C,D,ldwork=None):
+
+def ab07nd(n, m, A, B, C, D, ldwork=None):
     """ A_i,B_i,C_i,D_i,rcond = ab07nd(n,m,A,B,C,D,[ldwork])
 
     To compute the inverse (A_i,B_i,C_i,D_i) of a given system (A,B,C,D).
@@ -367,28 +371,29 @@ def ab07nd(n,m,A,B,C,D,ldwork=None):
             D of the original system.
     """
     hidden = ' (hidden by the wrapper)'
-    arg_list = ['n', 'm', 'A', 'LDA'+hidden, 'B', 'LDB'+hidden, 'C',
-    'LDC'+hidden, 'D', 'LDD'+hidden, 'rcond', 'IWORK'+hidden, 'DWORK'+hidden,
-    'ldwork', 'INFO'+hidden]
+    arg_list = ['n', 'm', 'A', 'LDA' + hidden, 'B', 'LDB' + hidden, 'C',
+                'LDC' + hidden, 'D', 'LDD' + hidden, 'rcond', 'IWORK' + hidden, 'DWORK' + hidden,
+                'ldwork', 'INFO' + hidden]
     if ldwork is None:
-        ldwork = max(1,4*m)
-    out = _wrapper.ab07nd(n,m,A,B,C,D,ldwork=ldwork)
+        ldwork = max(1, 4 * m)
+    out = _wrapper.ab07nd(n, m, A, B, C, D, ldwork=ldwork)
     if out[-1] < 0:
-        error_text = "The following argument had an illegal value: "+arg_list[-out[-1]-1]
+        error_text = "The following argument had an illegal value: " + arg_list[-out[-1] - 1]
         e = ValueError(error_text)
         e.info = out[-1]
         raise e
-    if out[-1] == m+1:
+    if out[-1] == m + 1:
         e = ValueError('Entry matrix D is numerically singular.')
         e.info = out[-1]
         raise e
     if out[-1] > 0:
-        e = ValueError('Entry matrix D is exactly singular, the (%i,%i) diagonal element is zero.' %(out[-1],out[-1]))
+        e = ValueError('Entry matrix D is exactly singular, the (%i,%i) diagonal element is zero.' % (out[-1], out[-1]))
         e.info = out[-1]
         raise e
     return out[:-1]
 
-def ab08nd(n,m,p,A,B,C,D,equil='N',tol=0,ldwork=None):
+
+def ab08nd(n, m, p, A, B, C, D, equil='N', tol=0, ldwork=None):
     """ nu,rank,dinfz,nkror,nkrol,infz,kronr,kronl,Af,Bf = ab08nd(n,m,p,A,B,C,D,[equil,tol,ldwork])
 
     To construct for a linear multivariable system described by a state-space
@@ -461,22 +466,23 @@ def ab08nd(n,m,p,A,B,C,D,equil='N',tol=0,ldwork=None):
             (n+p)-by-(n+m) part is used as internal workspace.
     """
     hidden = ' (hidden by the wrapper)'
-    arg_list = ['equil', 'n', 'm', 'p', 'A', 'LDA'+hidden, 'B', 'LDB'+hidden,
-        'C', 'LDC'+hidden, 'D', 'LDD'+hidden, 'nu', 'rank', 'dinfz', 'nkror',
-        'nkrol', 'infz', 'kronr', 'kronl', 'Af', 'LDAF'+hidden, 'Bf',
-        'LDBF'+hidden, 'tol', 'IWORK'+hidden, 'DWORK'+hidden, 'ldwork',
-        'INFO'+hidden]
+    arg_list = ['equil', 'n', 'm', 'p', 'A', 'LDA' + hidden, 'B', 'LDB' + hidden,
+                'C', 'LDC' + hidden, 'D', 'LDD' + hidden, 'nu', 'rank', 'dinfz', 'nkror',
+                'nkrol', 'infz', 'kronr', 'kronl', 'Af', 'LDAF' + hidden, 'Bf',
+                'LDBF' + hidden, 'tol', 'IWORK' + hidden, 'DWORK' + hidden, 'ldwork',
+                'INFO' + hidden]
     if ldwork is None:
-        ldwork = n+3*max(m,p) #only an upper bound
-    out = _wrapper.ab08nd(n,m,p,A,B,C,D,equil=equil,tol=tol,ldwork=ldwork)
+        ldwork = n + 3 * max(m, p)  # only an upper bound
+    out = _wrapper.ab08nd(n, m, p, A, B, C, D, equil=equil, tol=tol, ldwork=ldwork)
     if out[-1] < 0:
-        error_text = "The following argument had an illegal value: "+arg_list[-out[-1]-1]
+        error_text = "The following argument had an illegal value: " + arg_list[-out[-1] - 1]
         e = ValueError(error_text)
         e.info = out[-1]
         raise e
     return out[:-1]
 
-def ab09ad(dico,job,equil,n,m,p,A,B,C,nr=None,tol=0,ldwork=None):
+
+def ab09ad(dico, job, equil, n, m, p, A, B, C, nr=None, tol=0, ldwork=None):
     """ nr,Ar,Br,Cr,hsv = ab09ad(dico,job,equil,n,m,p,nr,A,B,C,[nr,tol,ldwork])
 
     Compute reduced order State-Space-Model (Ar, Br, Cr) for a stable system
@@ -558,13 +564,13 @@ def ab09ad(dico,job,equil,n,m,p,A,B,C,nr=None,tol=0,ldwork=None):
     """
     hidden = ' (hidden by the wrapper)'
     arg_list = ['dico', 'job', 'equil', 'ordsel', 'n', 'm', 'p', 'nr', 'A',
-        'lda'+hidden, 'B', 'ldb'+hidden, 'C', 'ldc'+hidden, 'hsv', 'tol',
-        'iwork'+hidden, 'dwork'+hidden, 'ldwork', 'iwarn', 'info']
+                'lda' + hidden, 'B', 'ldb' + hidden, 'C', 'ldc' + hidden, 'hsv', 'tol',
+                'iwork' + hidden, 'dwork' + hidden, 'ldwork', 'iwarn', 'info']
     if ldwork is None:
-        ldwork = max(1,n*(2*n+max(n,max(m,p))+5)+n*(n+1)/2)
+        ldwork = max(1, n * (2 * n + max(n, max(m, p)) + 5) + n * (n + 1) / 2)
     if nr is None:
         ordsel = 'A'
-        nr = 0 #order will be computed by the routine
+        nr = 0  # order will be computed by the routine
     else:
         ordsel = 'F'
     if dico != 'C' and dico != 'D':
@@ -573,7 +579,7 @@ def ab09ad(dico,job,equil,n,m,p,A,B,C,nr=None,tol=0,ldwork=None):
         raise ValueError('Parameter job had an illegal value')
     if equil != 'S' and equil != 'N':
         raise ValueError('Parameter equil had an illegal value')
-    out = _wrapper.ab09ad(dico,job,equil,ordsel,n,m,p,nr,A,B,C,tol,ldwork)
+    out = _wrapper.ab09ad(dico, job, equil, ordsel, n, m, p, nr, A, B, C, tol, ldwork)
     if out[-2] == 1:
         warnings.warn("The selected order nr is greater\
                 than the order of a minimal realization of the\
@@ -581,7 +587,7 @@ def ab09ad(dico,job,equil,n,m,p,A,B,C,nr=None,tol=0,ldwork=None):
                 corresponding to the order of a minimal realization\
                 of the system")
     if out[-1] < 0:
-        error_text = "The following argument had an illegal value: "+arg_list[-out[-1]-1]
+        error_text = "The following argument had an illegal value: " + arg_list[-out[-1] - 1]
         e = ValueError(error_text)
         e.info = out[-1]
         raise e
@@ -597,10 +603,11 @@ def ab09ad(dico,job,equil,n,m,p,A,B,C,nr=None,tol=0,ldwork=None):
         e = ArithmeticError('The computation of Hankel singular values failed')
         e.info = out[-1]
         raise e
-    Nr,A,B,C,hsv = out[:-2]
-    return Nr, A[:Nr,:Nr], B[:Nr,:], C[:,:Nr], hsv
+    Nr, A, B, C, hsv = out[:-2]
+    return Nr, A[:Nr, :Nr], B[:Nr, :], C[:, :Nr], hsv
 
-def ab09ax(dico,job,n,m,p,A,B,C,nr=None,tol=0.0,ldwork=None):
+
+def ab09ax(dico, job, n, m, p, A, B, C, nr=None, tol=0.0, ldwork=None):
     """``nr,Ar,Br,Cr,hsv,T,Ti = ab09ad(dico,job,equil,n,m,p,nr,A,B,C,[nr,tol,ldwork])``
 
     To compute a reduced order model ``(Ar,Br,Cr)`` for a stable original
@@ -691,21 +698,21 @@ def ab09ax(dico,job,n,m,p,A,B,C,nr=None,tol=0.0,ldwork=None):
     """
     hidden = ' (hidden by the wrapper)'
     arg_list = ['dico', 'job', 'ordsel', 'n', 'm', 'p', 'nr', 'A',
-        'lda'+hidden, 'B', 'ldb'+hidden, 'C', 'ldc'+hidden, 'hsv', 'T',
-        'ldt'+hidden, 'Ti', 'ldti'+hidden, 'tol', 'iwork'+hidden,
-        'dwork'+hidden, 'ldwork', 'iwarn', 'info']
+                'lda' + hidden, 'B', 'ldb' + hidden, 'C', 'ldc' + hidden, 'hsv', 'T',
+                'ldt' + hidden, 'Ti', 'ldti' + hidden, 'tol', 'iwork' + hidden,
+                'dwork' + hidden, 'ldwork', 'iwarn', 'info']
     if ldwork is None:
-        ldwork = max(1,n*(2*n+max(n,max(m,p))+5)+n*(n+1)/2)
+        ldwork = max(1, n * (2 * n + max(n, max(m, p)) + 5) + n * (n + 1) / 2)
     if nr is None:
         ordsel = 'A'
-        nr = 0 #order will be computed by the routine
+        nr = 0  # order will be computed by the routine
     else:
         ordsel = 'F'
     if dico != 'C' and dico != 'D':
         raise ValueError('Parameter dico had an illegal value')
     if job != 'B' and job != 'N':
         raise ValueError('Parameter job had an illegal value')
-    out = _wrapper.ab09ax(dico,job,ordsel,n,m,p,nr,A,B,C,tol,ldwork)
+    out = _wrapper.ab09ax(dico, job, ordsel, n, m, p, nr, A, B, C, tol, ldwork)
     if out[-2] == 1:
         warnings.warn("The selected order nr is greater\
                 than the order of a minimal realization of the\
@@ -713,7 +720,7 @@ def ab09ax(dico,job,n,m,p,A,B,C,nr=None,tol=0.0,ldwork=None):
                 corresponding to the order of a minimal realization\
                 of the system")
     if out[-1] < 0:
-        error_text = "The following argument had an illegal value: "+arg_list[-out[-1]-1]
+        error_text = "The following argument had an illegal value: " + arg_list[-out[-1] - 1]
         e = ValueError(error_text)
         e.info = out[-1]
         raise e
@@ -725,10 +732,11 @@ def ab09ax(dico,job,n,m,p,A,B,C,nr=None,tol=0.0,ldwork=None):
         e = ArithmeticError('The computation of Hankel singular values failed')
         e.info = out[-1]
         raise e
-    nr,A,B,C,hsv,T,Ti = out[:-2]
-    return nr, A[:nr,:nr], B[:nr,:], C[:,:nr], hsv, T[:,:nr], Ti[:nr,:]
+    nr, A, B, C, hsv, T, Ti = out[:-2]
+    return nr, A[:nr, :nr], B[:nr, :], C[:, :nr], hsv, T[:, :nr], Ti[:nr, :]
 
-def ab09bd(dico,job,equil,n,m,p,A,B,C,D,nr=None,tol1=0,tol2=0,ldwork=None):
+
+def ab09bd(dico, job, equil, n, m, p, A, B, C, D, nr=None, tol1=0, tol2=0, ldwork=None):
     """ nr,Ar,Br,Cr,Dr,hsv = ab09bd(dico,job,equil,n,m,p,A,B,C,D,[nr,tol1,tol2,ldwork])
     To compute a reduced order model (Ar,Br,Cr,Dr) for a stable
     original state-space representation (A,B,C,D) by using either the
@@ -837,13 +845,13 @@ def ab09bd(dico,job,equil,n,m,p,A,B,C,D,nr=None,tol1=0,tol2=0,ldwork=None):
 
     hidden = ' (hidden by the wrapper)'
     arg_list = ['dico', 'job', 'equil', 'ordsel', 'n', 'm', 'p', 'nr', 'A',
-        'lda'+hidden, 'B', 'ldb'+hidden, 'C', 'ldc'+hidden, 'D', 'ldd'+hidden, 'hsv', 'tol1', 'tol2',
-        'iwork'+hidden, 'dwork'+hidden, 'ldwork', 'iwarn', 'info']
+                'lda' + hidden, 'B', 'ldb' + hidden, 'C', 'ldc' + hidden, 'D', 'ldd' + hidden, 'hsv', 'tol1', 'tol2',
+                'iwork' + hidden, 'dwork' + hidden, 'ldwork', 'iwarn', 'info']
     if ldwork is None:
-        ldwork = max(1,n*(2*n+max(n,max(m,p))+5)+n*(n+1)/2)
+        ldwork = max(1, n * (2 * n + max(n, max(m, p)) + 5) + n * (n + 1) / 2)
     if nr is None:
         ordsel = 'A'
-        nr = 0 #order will be computed by the routine
+        nr = 0  # order will be computed by the routine
     else:
         ordsel = 'F'
     if dico != 'C' and dico != 'D':
@@ -852,7 +860,7 @@ def ab09bd(dico,job,equil,n,m,p,A,B,C,D,nr=None,tol1=0,tol2=0,ldwork=None):
         raise ValueError('Parameter job had an illegal value')
     if equil != 'S' and equil != 'N':
         raise ValueError('Parameter equil had an illegal value')
-    out = _wrapper.ab09bd(dico,job,equil,ordsel,n,m,p,nr,A,B,C,D,tol1,tol2,ldwork)
+    out = _wrapper.ab09bd(dico, job, equil, ordsel, n, m, p, nr, A, B, C, D, tol1, tol2, ldwork)
     if out[-2] == 1:
         warnings.warn("The selected order nr is greater\
                 than the order of a minimal realization of the\
@@ -860,7 +868,7 @@ def ab09bd(dico,job,equil,n,m,p,A,B,C,D,nr=None,tol1=0,tol2=0,ldwork=None):
                 corresponding to the order of a minimal realization\
                 of the system")
     if out[-1] < 0:
-        error_text = "The following argument had an illegal value: "+arg_list[-out[-1]-1]
+        error_text = "The following argument had an illegal value: " + arg_list[-out[-1] - 1]
         e = ValueError(error_text)
         e.info = out[-1]
         raise e
@@ -876,7 +884,69 @@ def ab09bd(dico,job,equil,n,m,p,A,B,C,D,nr=None,tol1=0,tol2=0,ldwork=None):
         e = ArithmeticError('The computation of Hankel singular values failed')
         e.info = out[-1]
         raise e
-    nr,A,B,C,D,hsv = out[:-2]
-    return nr, A[:Nr,:Nr], B[:Nr,:], C[:,:Nr],D[:,:], hsv
+    nr, A, B, C, D, hsv = out[:-2]
+    return nr, A[:nr, :nr], B[:nr, :], C[:, :nr], D[:, :], hsv
+
 
 # to be replaced by python wrappers
+
+
+def ab13fd(n, a, tol=0., ldwork=None, lcwork=None):
+    """
+    a,beta,omega,info = ab13fd(n,a,[tol,ldwork,lcwork,overwrite_a])
+
+    Wrapper for ``ab13fd``.
+    
+    Parameters
+    ----------
+    n : input int
+        leading dimension of a
+    a : input rank-2 array('d') with bounds (n,n)
+    
+    Other Parameters
+    ----------------
+    overwrite_a : input int, optional
+        Default: 0
+    tol : input float, optional
+        Default: 0.0
+    ldwork : input int, optional
+        Default: max(1,3*n*(n+2))
+    lcwork : input int, optional
+        Default: max(1,n*(n+3))
+    
+    Returns
+    -------
+    a : rank-2 array('d') with bounds (n,n)
+    beta : float
+    omega : float
+    info : int
+    """
+
+    hidden = ' (hidden by the wrapper)'
+    arg_list = ['n', 'a', 'lda', 'beta', 'omega', 'tol', 'dwork' + hidden, 'ldwork', 'cwork' + hidden, 'lcwork',
+                'info' + hidden]
+    if ldwork is None:
+        ldwork = max(1, 3 * n * (n + 2))
+    if lcwork is None:
+        lcwork = max(1, n * (n + 3))
+
+    a, beta, omega, info = _wrapper.ab13fd(n, a, tol, ldwork, lcwork)
+    if info < 0:
+        error_text = "The following argument had an illegal value: " + arg_list[-info - 1]
+        e = ValueError(error_text)
+        e.info = info
+        raise e
+    if info == 1:
+        e = ArithmeticError('the routine fails to compute beta(A) within the\
+                specified tolerance. Nevertheless, the returned\
+                value is an upper bound on beta(A);')
+        e.info = info
+        raise e
+    if info == 2:
+        e = ArithmeticError('either the QR or SVD algorithm (LAPACK Library\
+                routines DHSEQR, DGESVD or ZGESVD) fails to\
+                converge; this error is very rare.')
+        e.info = info
+        raise e
+    return a, beta, omega
+
