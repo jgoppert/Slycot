@@ -172,7 +172,7 @@ def sb01bd(n,m,np,alpha,A,B,w,dico,tol=0.0,ldwork=None):
     w = _np.zeros(np,'complex64')
     w.real = wr[0:np]
     w.imag = wi[0:np]
-    return A_z,w,nfp,nap,nup,F,Z
+    return A_z,w,nfp,nap,nup,F,Z,warn
 
 def sb02md(n,A,G,Q,dico,hinv='D',uplo='U',scal='N',sort='S',ldwork=None):
     """  X,rcond,w,S,U,A_inv = sb02md(dico,n,A,G,Q,[hinv,uplo,scal,sort,ldwork])

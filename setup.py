@@ -41,9 +41,9 @@ Operating System :: MacOS
 
 MAJOR = 0
 MINOR = 2
-MICRO = 0
+MICRO = 1
 POST = 0
-ISRELEASED = True
+ISRELEASED = False
 VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
 if POST != 0:
     VERSION += '-post{:d}'.format(POST)

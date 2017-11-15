@@ -14,7 +14,7 @@ else:
 
     # Analysis routines (6/40 wrapped)
     from .analysis import ab01nd,ab05md,ab05nd,ab07nd,ab08nd, ab09ad, \
-                          ab09ax, ab09bd
+                          ab09ax, ab09bd, ab13fd
 
     # Data analysis routines (0/7 wrapped)
 
